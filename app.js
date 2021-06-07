@@ -12,7 +12,12 @@ var conf = require('./conf/config');
 var app = express();
 
 var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+var io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
 server.listen(3001, function() {
   var host = server.address().address
   var port = server.address().port

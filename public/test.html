@@ -7,12 +7,46 @@
 
 <body>
     <script>
+
+setTimeout(()=>{        
+const response = fetch("http://localhost:3001/notifications", {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+        "subscriptionId": "12345",
+        "data": [
+            {
+                "id": "SignalStrengthSensor1",
+                "type": "SignalSensor",
+                "strength": {
+                    "value": 23,
+                    "type": "Number",
+                    "metadata": {}
+                },
+                "location": {
+                "value": {
+                    "type": "Point",
+                    "coordinates": [2.186447214, 41.3763726]
+                },
+                "type": "geo:json"
+                },
+                "timestamp": {
+                    "value": "2021-06-03T07:21:24.238Z",
+                    "type": "DateTime"
+                }
+            }
+        ]
+    }) 
+    }).then(response => response.json())
+},3000)
+
         const socket = io("http://localhost:3001");
         socket.on("connect", () => {
             console.log('connected');
         });
         socket.on('DRAW-GEOMETRY', (value) => {
-            console.log(value)
+            console.log(value);
+            console.log('draw geometry event');
         })
     </script>
     HELLO

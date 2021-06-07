@@ -5,6 +5,7 @@ module.exports = function(io) {
 
   notificationsRouter.post('/', function(req, res) {
     io.emit('DRAW-GEOMETRY', req.body.data)
+    console.log(req.body);
     res.status(201).json(req.body);
   });
 
