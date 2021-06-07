@@ -5,12 +5,15 @@ var cors = require('cors')
 
 var routes = require('./routes/index');
 var mapStateRouter = require('./routes/mapstate');
+var notificationsRouter = require('./routes/notifications');
 var errors = require('./routes/errors');
 var conf = require('./conf/config');
 
 var app = express();
 
-var server = app.listen(3001, function () {
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+server.listen(3001, function() {
   var host = server.address().address
   var port = server.address().port
 
@@ -59,6 +62,7 @@ if (conf['cors']) {
 
 app.use('/origoserver/', routes);
 app.use('/mapstate', mapStateRouter);
+app.use('/notifications', notificationsRouter(io));
 app.use(errors);
 
 module.exports = app;

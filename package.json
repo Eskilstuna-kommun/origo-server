@@ -9,7 +9,8 @@
   "license": "BSD-2-Clause",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "start-dev": "nodemon app.js"
   },
   "dependencies": {
     "bluebird": "^3.7.2",
@@ -34,6 +35,7 @@
     "saml2-js": "^3.0.1",
     "serve-favicon": "^2.5.0",
     "soap": "^0.36.0",
+    "socket.io": "^4.1.2",
     "sqlite3": "^5.0.2",
     "utf8": "^3.0.0",
     "wkt": "^0.1.1",
@@ -46,5 +48,8 @@
     "oracledb": "^3.1.2",
     "pg": "^6.1.0",
     "pg-promise": "^5.3.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
