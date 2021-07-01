@@ -10,7 +10,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "start-dev": "nodemon app.js"
+    "start-dev": "nodemon app.js",
+    "test": "mocha \"./tests/**/*.test.js\""
   },
   "dependencies": {
     "bluebird": "^3.7.2",
@@ -25,6 +26,7 @@
     "express-openapi": "^7.5.0",
     "http-proxy": "^1.18.1",
     "iconv-lite": "^0.6.2",
+    "jsonschema": "^1.4.0",
     "node-fetch": "^2.6.1",
     "node-gyp": "^7.1.2",
     "npm": "^6.14.12",
@@ -51,6 +53,7 @@
     "pg-promise": "^5.3.5"
   },
   "devDependencies": {
+    "mocha": "^9.0.1",
     "nodemon": "^2.0.7"
   }
 }

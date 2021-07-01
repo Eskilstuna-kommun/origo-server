@@ -119,5 +119,15 @@ module.exports = {
         encoding: 'iso-8859-1'
       }
     ]
+  },
+  'notifications': {
+    lorawan: {
+      geoserverWfsUrl: 'serviceUrl',
+      geoserverUser: 'username',
+      geoserverPass: 'password',
+      origoLayerName: '',
+      origoLayerSourceName: '',
+      schemaName: ''
+    }
   }
 }
