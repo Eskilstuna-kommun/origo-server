@@ -18,7 +18,7 @@ var io = require("socket.io")(server, {
     methods: ["GET", "POST"]
   }
 });
-server.listen(3001, function() {
+server.listen(3004, function() {
   var host = server.address().address
   var port = server.address().port
 

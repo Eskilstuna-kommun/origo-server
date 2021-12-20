@@ -7,28 +7,50 @@ const validateJson = require("../lib/utils/validatejson");
 
 const notificationsRouter = express.Router();
 
-function validateRequest(req, res, next) {
+/**
+ * middleware to validate req body
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+function validateRequest (req, res, next) {
   const inputData = req.body;
-  conf.notifications.lorawan;
-  // Check that we have a subscriptionId and that that Id exists in the config
-  if (inputData.subscriptionId && conf.notifications[inputData.subscriptionId]) {
-    req.notificationConfig = conf.notifications[inputData.subscriptionId];
-    const validationResult = validateJson.validateToSchema(
-      inputData.data[0],
-      req.notificationConfig.schemaName
-    );
-    if (validationResult.errors.length === 0) {
-      next(); // Goto next controller
-    } else {
-      res.status(400).json(validationResult.errors);
-    }
+  const {id} = req.params
+
+  if (id) {
+    inputData.id = +id;
+  }
+  const validationResult = validateJson.validateToSchema(
+    inputData,
+    req.notificationConfig.schemaName
+  );
+  if (validationResult.errors.length === 0) {
+    next(); // Goto next controller
   } else {
-    res.status(400).json([{ message: "invalid subscriptionId" }]);
+    res.status(400).json(validationResult.errors);
   }
 }
 
+/**
+ * middleware to check if route exists
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+function checkRoute (req, res, next) {
+  const {layerName} = req.params
+
+  if (layerName && conf.notifications[layerName]) {
+    req.notificationConfig = conf.notifications[layerName];
+    next();
+  } else {
+    res.status(404).json([{ message: "invalid route" }]);
+  }
+}
+
+
 module.exports = function (io) {
-  notificationsRouter.post("/", validateRequest, function (req, res) {
+  notificationsRouter.put("/:layerName/:id", checkRoute, validateRequest, function (req, res) {
     const {
       geoserverWfsUrl,
       geoserverUser,
@@ -38,21 +60,46 @@ module.exports = function (io) {
     } = req.notificationConfig;
     const inputData = req.body;
 
-    const gml = formatConverters.sensordataToGML(req.body.data[0]);
+    const gml = formatConverters.sosdataToGML(req.params.id, inputData, origoLayerName);
 
     // Save via wfs-transact
     wfs
       .insertGml(gml, geoserverWfsUrl, geoserverUser, geoserverPass)
-      .then((geoserverResponse) => geoserverResponse.text())
-      .then((geoserverResponseText) => {
+      .then(() => {
         // After save triger a refresh event to clients
         io.emit("redraw-layer", {
           sourceName: origoLayerSourceName,
           name: origoLayerName,
         });
-        io.emit("draw-geometry", {
-          layerTitle: "Sista position",
-          geoJson: req.body.data[0].location.value,
+        res.sendStatus(201); 
+      })
+      .catch((error) => {
+        console.log(error)
+        res.sendStatus(500);
+      });
+   
+  })
+  notificationsRouter.post("/:layerName", checkRoute, validateRequest, function (req, res) {
+    const {
+      geoserverWfsUrl,
+      geoserverUser,
+      geoserverPass,
+      origoLayerName,
+      origoLayerSourceName,
+    } = req.notificationConfig;
+    const inputData = req.body;
+
+
+    const gml = formatConverters.jsonPointToInsertGML(req.body.data[0], origoLayerName);
+    console.log(gml);
+    // Save via wfs-transact
+    wfs
+      .insertGml(gml, geoserverWfsUrl, geoserverUser, geoserverPass)
+      .then(() => {
+        // After save triger a refresh event to clients
+        io.emit("redraw-layer", {
+          sourceName: origoLayerSourceName,
+          name: origoLayerName,
         });
         res.sendStatus(201);
       })

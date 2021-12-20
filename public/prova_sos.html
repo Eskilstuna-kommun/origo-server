@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.socket.io/4.1.1/socket.io.min.js" integrity="sha384-cdrFIqe3RasCMNE0jeFG9xJHog/tgOVC1E9Lzve8LQN1g5WUHo0Kvk1mawWjxX7a" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <script>
+const route_1 = [[16.505276,59.385574,28],[16.505388,59.386073,28],[16.507585,59.384695,28],[16.508327,59.384357,28],[16.512661,59.382738,28],[16.514531,59.381863,15],[16.521842,59.379484,15],[16.522803,59.379047,28],[16.523234,59.379158,15],[16.52333,59.379464,15],[16.522817,59.379523,1],[16.522181,59.378897,1],[16.51983,59.376981,1],[16.519339,59.376683,1],[16.518191,59.375562,1],[16.517092,59.374888,1],[16.516872,59.374559,1],[16.515163,59.372908,1],[16.514039,59.372965,1],[16.511468,59.373742,1],[16.50772,59.374716,1],[16.505336,59.373183,1],[16.504433,59.373304,1],[16.502731,59.373885,28],[16.501777,59.374537,28],[16.500235,59.375617,28],[16.498637,59.376727,28],[16.497041,59.378124,28],[16.495957,59.379576,28],[16.499018,59.381698,28],[16.497,59.382595,28],[16.491107,59.384657,28]];
+const route_2 = [[16.532861,59.364513],[16.531984,59.364836],[16.529117,59.366064],[16.531439,59.367485],[16.532706,59.36905],[16.532855,59.37118],[16.532148,59.372928],[16.531541,59.37445],[16.52958,59.375619],[16.525355,59.376847],[16.523659,59.377771],[16.522652,59.378622],[16.52302,59.379092],[16.523372,59.379295],[16.523142,59.379537],[16.522574,59.379373],[16.52244,59.37882],[16.523428,59.378754],[16.525197,59.379474],[16.532121,59.382103],[16.534944,59.384461],[16.537295,59.388287],[16.534368,59.389368],[16.53384,59.389621],[16.532394,59.390166],[16.532075,59.390183],[16.531949,59.390048],[16.532107,59.389943],[16.532268,59.389935],[16.533766,59.389313],[16.537249,59.388311],[16.535193,59.384767],[16.532707,59.382507],[16.531469,59.377691],[16.531257,59.375209],[16.531863,59.374776],[16.532083,59.373689],[16.532516,59.373045],[16.533169,59.37162],[16.533432,59.369923],[16.532513,59.36814],[16.531348,59.367184],[16.530617,59.366802],[16.532311,59.364538]]
+
+function generatePoint(lat, lon, vehicle_nr, vehicle_type) {
+	const dateNow = new Date(Date.now()).toISOString();
+	const point = { 
+    "fordonstyp": { 
+        "value": vehicle_type, 
+        "type": "Text", 
+        "metadata": {}
+    }, 
+     "location": {
+            "type": "geo:json",
+            "value": {
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [lat, lon]
+                }
+            }
+        }
+}
+
+	console.log(JSON.stringify(point));
+	const response = fetch("https://karta.eskilstuna.se/realtid/notifications/sos_fordon/" + vehicle_nr, {
+		method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+		headers: {'Content-Type': 'application/json'},
+		body: JSON.stringify(point)
+	}).then(response => console.log(response.text()))
+}
+
+const runner_1= setInterval(function(){
+	if(route_1.length > 0){
+		const currentData = route_1.pop();
+		generatePoint(currentData[0], currentData[1], 1, "brandbil");
+	} else {
+		clearInterval(runner_1);
+	}
+},4000); 
+
+const runner_2 = setInterval(function(){
+	if(route_2.length > 0){
+		const currentData = route_2.pop();
+		generatePoint(currentData[0], currentData[1], 2, "ambulans");
+	} else {
+		clearInterval(runner_2);
+	}
+},4000);
+
+/*
+        const socket = io("http://localhost:3004");
+        socket.on("connect", () => {
+            console.log('connected');
+        });
+        socket.on('DRAW-GEOMETRY', (value) => {
+            console.log(value);
+            console.log('draw geometry event');
+        })*/
+    </script>
+    HELLO
+</body>
+
+</html>

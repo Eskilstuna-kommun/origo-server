@@ -122,12 +122,28 @@ module.exports = {
   },
   'notifications': {
     lorawan: {
-      geoserverWfsUrl: 'serviceUrl',
-      geoserverUser: 'username',
-      geoserverPass: 'password',
-      origoLayerName: '',
-      origoLayerSourceName: '',
-      schemaName: ''
+      geoserverWfsUrl: 'https://karta.eskilstuna.se/geoserver/realtid/wfs',
+      geoserverUser: 'realtid',
+      geoserverPass: '**removed**',
+      origoLayerName: 'realtidspunkt',
+      origoLayerSourceName: 'realtid',
+      schemaName: 'lorawanSchema'
+    },
+    sos_fordon: {
+      geoserverWfsUrl: 'https://karta.eskilstuna.se/geoserver/realtid/wfs',
+      geoserverUser: 'realtid',
+      geoserverPass: '**removed**',
+      origoLayerName: 'sos_fordon',
+      origoLayerSourceName: 'realtid',
+      schemaName: 'sos_fordon'
+    },
+    sos_olycka: {
+      geoserverWfsUrl: 'https://karta.eskilstuna.se/geoserver/realtid/wfs',
+      geoserverUser: 'realtid',
+      geoserverPass: '**removed**',
+      origoLayerName: 'sos_olycka',
+      origoLayerSourceName: 'realtid',
+      schemaName: 'sos_olycka'
     }
   }
 }
