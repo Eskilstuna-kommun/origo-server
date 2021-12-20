@@ -9,7 +9,9 @@
   "license": "BSD-2-Clause",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "start-dev": "nodemon app.js",
+    "test": "mocha \"./tests/**/*.test.js\""
   },
   "dependencies": {
     "bluebird": "^3.7.2",
@@ -24,6 +26,8 @@
     "express-openapi": "^7.5.0",
     "http-proxy": "^1.18.1",
     "iconv-lite": "^0.6.2",
+    "jsonschema": "^1.4.0",
+    "node-fetch": "^2.6.1",
     "node-gyp": "^7.1.2",
     "npm": "^6.14.12",
     "orm": "^5.0.5",
@@ -34,6 +38,7 @@
     "saml2-js": "^3.0.1",
     "serve-favicon": "^2.5.0",
     "soap": "^0.36.0",
+    "socket.io": "^4.1.2",
     "sqlite3": "^5.0.2",
     "utf8": "^3.0.0",
     "wkt": "^0.1.1",
@@ -46,5 +51,9 @@
     "oracledb": "^3.1.2",
     "pg": "^6.1.0",
     "pg-promise": "^5.3.5"
+  },
+  "devDependencies": {
+    "mocha": "^9.0.1",
+    "nodemon": "^2.0.7"
   }
 }

@@ -119,5 +119,31 @@ module.exports = {
         encoding: 'iso-8859-1'
       }
     ]
+  },
+  'notifications': {
+    lorawan: {
+      geoserverWfsUrl: 'https://karta.eskilstuna.se/geoserver/realtid/wfs',
+      geoserverUser: 'realtid',
+      geoserverPass: '**removed**',
+      origoLayerName: 'realtidspunkt',
+      origoLayerSourceName: 'realtid',
+      schemaName: 'lorawanSchema'
+    },
+    sos_fordon: {
+      geoserverWfsUrl: 'https://karta.eskilstuna.se/geoserver/realtid/wfs',
+      geoserverUser: 'realtid',
+      geoserverPass: '**removed**',
+      origoLayerName: 'sos_fordon',
+      origoLayerSourceName: 'realtid',
+      schemaName: 'sos_fordon'
+    },
+    sos_olycka: {
+      geoserverWfsUrl: 'https://karta.eskilstuna.se/geoserver/realtid/wfs',
+      geoserverUser: 'realtid',
+      geoserverPass: '**removed**',
+      origoLayerName: 'sos_olycka',
+      origoLayerSourceName: 'realtid',
+      schemaName: 'sos_olycka'
+    }
   }
 }
